@@ -73,8 +73,7 @@ class ChatList extends StatefulWidget {
 }
 
 /// [ChatList] widget state.
-class _ChatListState extends State<ChatList>
-    with SingleTickerProviderStateMixin {
+class _ChatListState extends State<ChatList> with SingleTickerProviderStateMixin {
   late final Animation<double> _animation = CurvedAnimation(
     curve: Curves.easeOutQuad,
     parent: _controller,
@@ -83,8 +82,7 @@ class _ChatListState extends State<ChatList>
 
   bool _indicatorOnScrollStatus = false;
   bool _isNextPageLoading = false;
-  final GlobalKey<SliverAnimatedListState> _listKey =
-      GlobalKey<SliverAnimatedListState>();
+  final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
 
   @override
@@ -147,8 +145,7 @@ class _ChatListState extends State<ChatList>
     }
   }
 
-  Widget _removedMessageBuilder(Object item, Animation<double> animation) =>
-      SizeTransition(
+  Widget _removedMessageBuilder(Object item, Animation<double> animation) => SizeTransition(
         key: _valueKeyForItem(item),
         axisAlignment: -1,
         sizeFactor: animation.drive(CurveTween(curve: Curves.easeInQuad)),
@@ -192,8 +189,7 @@ class _ChatListState extends State<ChatList>
     }
   }
 
-  Key? _valueKeyForItem(Object item) =>
-      _mapMessage(item, (message) => ValueKey(message.id));
+  Key? _valueKeyForItem(Object item) => _mapMessage(item, (message) => ValueKey(message.id));
 
   T? _mapMessage<T>(Object maybeMessage, T Function(types.Message) f) {
     if (maybeMessage is Map<String, Object>) {
@@ -216,15 +212,13 @@ class _ChatListState extends State<ChatList>
   }
 
   @override
-  Widget build(BuildContext context) =>
-      NotificationListener<ScrollNotification>(
+  Widget build(BuildContext context) => NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification.metrics.pixels > 10.0 && !_indicatorOnScrollStatus) {
             setState(() {
               _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
             });
-          } else if (notification.metrics.pixels == 0.0 &&
-              _indicatorOnScrollStatus) {
+          } else if (notification.metrics.pixels == 0.0 && _indicatorOnScrollStatus) {
             setState(() {
               _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
             });
@@ -235,8 +229,7 @@ class _ChatListState extends State<ChatList>
           }
 
           if (notification.metrics.pixels >=
-              (notification.metrics.maxScrollExtent *
-                  (widget.onEndReachedThreshold ?? 0.75))) {
+              (notification.metrics.maxScrollExtent * (widget.onEndReachedThreshold ?? 0.75))) {
             if (widget.items.isEmpty || _isNextPageLoading) return false;
 
             _controller.duration = Duration.zero;
@@ -266,20 +259,17 @@ class _ChatListState extends State<ChatList>
           physics: widget.scrollPhysics,
           reverse: true,
           slivers: [
-            if (widget.bottomWidget != null)
-              SliverToBoxAdapter(child: widget.bottomWidget),
+            if (widget.bottomWidget != null) SliverToBoxAdapter(child: widget.bottomWidget),
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
               sliver: SliverToBoxAdapter(
-                child: (widget.typingIndicatorOptions!.typingUsers.isNotEmpty &&
-                        !_indicatorOnScrollStatus)
+                child: (widget.typingIndicatorOptions!.typingUsers.isNotEmpty && !_indicatorOnScrollStatus)
                     ? widget.typingIndicatorOptions?.customTypingIndicator ??
                         TypingIndicator(
                           bubbleAlignment: widget.bubbleRtlAlignment,
                           options: widget.typingIndicatorOptions!,
-                          showIndicator: (widget.typingIndicatorOptions!
-                                  .typingUsers.isNotEmpty &&
-                              !_indicatorOnScrollStatus),
+                          showIndicator:
+                              (widget.typingIndicatorOptions!.typingUsers.isNotEmpty && !_indicatorOnScrollStatus),
                         )
                     : const SizedBox.shrink(),
               ),
@@ -300,16 +290,12 @@ class _ChatListState extends State<ChatList>
                 },
                 initialItemCount: widget.items.length,
                 key: _listKey,
-                itemBuilder: (_, index, animation) =>
-                    _newMessageBuilder(index, animation),
+                itemBuilder: (_, index, animation) => _newMessageBuilder(index, animation),
               ),
             ),
             SliverPadding(
               padding: EdgeInsets.only(
-                top: 16 +
-                    (widget.useTopSafeAreaInset
-                        ? MediaQuery.of(context).padding.top
-                        : 0),
+                top: 16 + (widget.useTopSafeAreaInset ? MediaQuery.of(context).padding.top : 0),
               ),
               sliver: SliverToBoxAdapter(
                 child: SizeTransition(
@@ -328,9 +314,7 @@ class _ChatListState extends State<ChatList>
                                 backgroundColor: Colors.transparent,
                                 strokeWidth: 1.5,
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  InheritedChatTheme.of(context)
-                                      .theme
-                                      .primaryColor,
+                                  InheritedChatTheme.of(context).theme.primaryColor,
                                 ),
                               )
                             : null,
