@@ -315,10 +315,10 @@ class Message extends StatelessWidget {
               end: isMobile ? query.padding.right : 0,
               start: 20 + (isMobile ? query.padding.left : 0),
             )
-          : EdgeInsets.only(
+          : const EdgeInsets.only(
               bottom: 4,
-              left: 4,
-              right: 4,
+              left: 0,
+              right: 0,
             ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,

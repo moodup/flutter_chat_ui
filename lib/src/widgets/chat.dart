@@ -457,7 +457,7 @@ class ChatState extends State<Chat> {
           imageMessageBuilder: widget.imageMessageBuilder,
           imageProviderBuilder: widget.imageProviderBuilder,
           message: message,
-          messageWidth: constraints.maxWidth.floor(),
+          messageWidth: constraints.maxWidth.floor() - 4,
           nameBuilder: widget.nameBuilder,
           onAvatarTap: widget.onAvatarTap,
           onMessageDoubleTap: widget.onMessageDoubleTap,
