@@ -129,7 +129,8 @@ class Chat extends StatefulWidget {
   final Widget Function(types.CustomMessage, {required int messageWidth})? customMessageBuilder;
 
   /// See [Message.customStatusBuilder].
-  final Widget Function(types.Message message, {required BuildContext context})? customStatusBuilder;
+  final Widget Function(types.Message message, {required BuildContext context})?
+      customStatusBuilder;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date, do not return time here. See [timeFormat] to customize the time format. [dateLocale] will be ignored if you use this, so if you want a localized date make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText] for more customization.
   final DateFormat? dateFormat;
@@ -396,7 +397,9 @@ class ChatState extends State<Chat> {
 
   /// Only scroll to first unread if there are messages and it is the first open.
   void _maybeScrollToFirstUnread() {
-    if (widget.scrollToUnreadOptions.scrollOnOpen && _chatMessages.isNotEmpty && !_hadScrolledToUnreadOnOpen) {
+    if (widget.scrollToUnreadOptions.scrollOnOpen &&
+        _chatMessages.isNotEmpty &&
+        !_hadScrolledToUnreadOnOpen) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (mounted) {
           await Future.delayed(widget.scrollToUnreadOptions.scrollDelay);
@@ -443,11 +446,13 @@ class ChatState extends State<Chat> {
       final Widget messageWidget;
 
       if (message is types.SystemMessage) {
-        messageWidget = widget.systemMessageBuilder?.call(message) ?? SystemMessage(message: message.text);
+        messageWidget =
+            widget.systemMessageBuilder?.call(message) ?? SystemMessage(message: message.text);
       } else {
+        final minWidth = widget.theme.messageMinWidth;
         final messageWidth = message.author.id != widget.user.id
-            ? min(constraints.maxWidth, 440).floor()
-            : min(constraints.maxWidth - 4, 440).floor();
+            ? min(constraints.maxWidth, minWidth).floor()
+            : min(constraints.maxWidth - 4, minWidth).floor();
         final Widget msgWidget = Message(
           audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
@@ -489,8 +494,9 @@ class ChatState extends State<Chat> {
           userAgent: widget.userAgent,
           videoMessageBuilder: widget.videoMessageBuilder,
         );
-        messageWidget =
-            widget.slidableMessageBuilder == null ? msgWidget : widget.slidableMessageBuilder!(message, msgWidget);
+        messageWidget = widget.slidableMessageBuilder == null
+            ? msgWidget
+            : widget.slidableMessageBuilder!(message, msgWidget);
       }
 
       return AutoScrollTag(
